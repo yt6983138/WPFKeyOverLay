@@ -1,0 +1,87 @@
+﻿<!-- You may see some errors here, just ignore them -->
+    
+<Grid xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'
+      xmlns:av="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="av"
+      Background="Transparent"
+      VerticalAlignment="Bottom"
+      HorizontalAlignment="Stretch"
+      Height="48">
+    <Grid.RowDefinitions>
+        <RowDefinition Height="2*"/>
+        <RowDefinition Height="1*"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="1*"/>
+    </Grid.ColumnDefinitions>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <!-- $CurrentKey$ is special markup, use $CurrentKey\$ to escape -->
+        <Label Content="{DynamicResource ResourceKey=Key.$CurrentKey$.Kps}"
+               ContentStringFormat="0.00"
+               FontSize="13" 
+               VerticalAlignment="Center" 
+               HorizontalAlignment="Right"
+               HorizontalContentAlignment="Right" 
+               VerticalContentAlignment="Center" 
+               ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+               FlowDirection="RightToLeft"
+               Grid.Row="0"
+               Padding="0,0,0,0"
+               Margin="0,0,0,0"/>
+        <Label Content="{DynamicResource ResourceKey=Key.$CurrentKey$.PeakKps}"
+               ContentStringFormat="0.00"
+               FontSize="13" 
+               VerticalAlignment="Center" 
+               HorizontalAlignment="Right"
+               HorizontalContentAlignment="Right" 
+               VerticalContentAlignment="Center" 
+               ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+               FlowDirection="RightToLeft"
+               Grid.Row="1"
+               Padding="0,0,0,0"
+               Margin="0,0,0,0"/>
+
+        <Label Content="Kps"
+               FontSize="13" 
+               VerticalAlignment="Center" 
+               HorizontalAlignment="Left"
+               HorizontalContentAlignment="Left" 
+               VerticalContentAlignment="Center" 
+               ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+               Grid.Row="0"
+               Grid.Column="1"
+               Padding="0,0,0,0"
+               Margin="0,0,0,0"/>
+        <Label Content="Max"
+               FontSize="13" 
+               VerticalAlignment="Center" 
+               HorizontalAlignment="Left"
+               HorizontalContentAlignment="Left" 
+               VerticalContentAlignment="Center" 
+               ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+               Grid.Row="1"
+               Grid.Column="1"
+               Padding="0,0,0,0"
+               Margin="0,0,0,0"/>
+    </Grid>
+
+    <Label Content="{DynamicResource ResourceKey=Key.$CurrentKey$.ClickCount}"
+           ContentStringFormat="0"
+           FontSize="13" 
+           VerticalAlignment="Center" 
+           HorizontalAlignment="Center"
+           HorizontalContentAlignment="Center" 
+           VerticalContentAlignment="Center" 
+           ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+           Grid.Row="2"
+           Padding="0,0,0,0"
+           Margin="0,0,0,0"/>
+</Grid>

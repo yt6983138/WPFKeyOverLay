@@ -1,0 +1,59 @@
+﻿<!-- You may see some errors here, just ignore them -->
+    
+<Grid xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation'
+      xmlns:av="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="av"
+      Background="Transparent"
+      VerticalAlignment="Stretch"
+      HorizontalAlignment="Stretch">
+
+    <Grid.RowDefinitions>
+        <RowDefinition Height="*" />
+        <RowDefinition Height="4*" />
+        <RowDefinition Height="32" />
+    </Grid.RowDefinitions>
+    
+    <Grid VerticalAlignment="Top"
+          HorizontalAlignment="Stretch"
+          Grid.Row="1">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Label Content="{DynamicResource ResourceKey=Key.All.Kps}"
+               ContentStringFormat="0.00"
+               FontSize="32" 
+               VerticalAlignment="Center" 
+               HorizontalAlignment="Right"
+               HorizontalContentAlignment="Right" 
+               VerticalContentAlignment="Center" 
+               ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+               FlowDirection="RightToLeft"/>
+        <Label Content="Kps" Grid.Column="1"
+               FontSize="32" 
+               VerticalAlignment="Center" 
+               HorizontalContentAlignment="Left" 
+               VerticalContentAlignment="Center" 
+               ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
+
+        <Label Content="{DynamicResource ResourceKey=Key.All.PeakKps}" Grid.Row="1"
+               ContentStringFormat="0.00"
+               FontSize="32" 
+               VerticalAlignment="Center" 
+               HorizontalAlignment="Right"
+               HorizontalContentAlignment="Right" 
+               VerticalContentAlignment="Center" 
+               ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+               FlowDirection="RightToLeft"/>
+        <Label Content="Peak" Grid.Column="1" Grid.Row="1"
+               FontSize="32" 
+               VerticalAlignment="Center" 
+               HorizontalContentAlignment="Left" 
+               VerticalContentAlignment="Center" 
+               ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
+    </Grid>
+</Grid>
