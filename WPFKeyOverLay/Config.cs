@@ -3,6 +3,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 
 namespace WPFKeyOverLay;
+
+public record class KeyActionRecord(Key Key, HotkeyActions HotkeyActions);
 public class Config
 {
 	public float TrailPixelPerSecond { get; set; } = 200;
@@ -18,12 +20,12 @@ public class Config
 	public string? ExternalUISource { get; set; } = "./Default.xaml";
 	public string? ForAllKeysUISource { get; set; } = "./ForEachKey.xaml";
 
-	public List<(Key Key, HotkeyActions HotkeyActions)> SpecialHotKeys { get; set; } = new()
+	public List<KeyActionRecord> SpecialHotKeys { get; set; } = new()
 	{
-		(Key.Subtract, HotkeyActions.ClearStatistics),
-		(Key.Multiply, HotkeyActions.ToggleClickThrough),
-		(Key.Divide, HotkeyActions.ToggleAlwaysOnTop),
-		(Key.NumLock, HotkeyActions.ToggleHiding),
-		(Key.Add, HotkeyActions.Close)
-	};
+		new(Key.Subtract, HotkeyActions.ClearStatistics),
+		new(Key.Multiply, HotkeyActions.ToggleClickThrough),
+		new(Key.Divide, HotkeyActions.ToggleAlwaysOnTop),
+		new(Key.NumLock, HotkeyActions.ToggleHiding),
+		new(Key.Add, HotkeyActions.Close)
+	}; // bruh why the fuck is system.json not able to serialize tuples
 }

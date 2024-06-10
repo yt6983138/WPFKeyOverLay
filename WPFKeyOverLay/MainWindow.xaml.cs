@@ -253,7 +253,7 @@ public partial class MainWindow : Window
 		}
 		this.Resources["Key.All.ClickCount"] = this.App.Config.Keys.Sum(x => x.ClickCount);
 
-		foreach ((Key Key, HotkeyActions HotkeyActions) hotkey in this.App.Config.SpecialHotKeys)
+		foreach (KeyActionRecord hotkey in this.App.Config.SpecialHotKeys)
 		{
 			if (hotkey.Key != e.Key) continue;
 
