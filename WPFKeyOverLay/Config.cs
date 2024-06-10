@@ -5,7 +5,7 @@ using System.Windows.Media;
 namespace WPFKeyOverLay;
 public class Config
 {
-	public float PixelPerSecond { get; set; } = 200;
+	public float TrailPixelPerSecond { get; set; } = 200;
 	public int KpsUpdatesPerSecond { get; set; } = 20;
 	public int DefaultHeight { get; set; } = 700;
 	public float TrailUpdateFps { get; set; } = 60;

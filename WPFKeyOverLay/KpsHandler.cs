@@ -4,7 +4,7 @@ public class KpsHandler
 	private int index;
 	private int[] kps;
 
-	private Timer timer;
+	private readonly Timer timer; // prevent gc
 
 	public float Kps
 	{

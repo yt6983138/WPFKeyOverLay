@@ -11,15 +11,15 @@ public class KeyInfo
 	private string? _text = null;
 
 	public float Width { get; set; } = 64;
-	public SolidColorBrush BeforeClickButtonColor { get; set; } = new(Color.FromArgb(200, 255, 255, 255));
-	public SolidColorBrush AfterClickButtonColor { get; set; } = new(Color.FromArgb(200, 150, 150, 150));
+	public SolidColorBrush KeyboardUpButtonColor { get; set; } = new(Color.FromArgb(200, 255, 255, 255));
+	public SolidColorBrush KeyboardDownButtonColor { get; set; } = new(Color.FromArgb(200, 150, 150, 150));
 	public SolidColorBrush TextColor { get; set; } = new(Color.FromArgb(255, 0, 0, 0));
 	public SolidColorBrush TrailColor { get; set; } = new(Color.FromArgb(200, 150, 150, 150));
 	public SolidColorBrush TrailBackgroundColor { get; set; } = new(Color.FromArgb(0, 0, 0, 0));
 	public Thickness TrailMargin { get; set; } = new(5, 0, 5, 0);
-	public Thickness Margin { get; set; } = new(5, 0, 5, 5 + 48);
+	public Thickness ButtonMargin { get; set; } = new(5, 0, 5, 5 + 48);
 	public Key Key { get; set; }
-	public float TextSize { get; set; } = 11.4514f;
+	public float FontSize { get; set; } = 11.4514f;
 	public string Text
 	{
 		get => this._text ?? this.Key.ToString();

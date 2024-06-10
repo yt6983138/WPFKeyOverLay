@@ -78,14 +78,14 @@ public partial class MainWindow : Window
 
 			Button button = new()
 			{
-				Margin = key.Margin,
+				Margin = key.ButtonMargin,
 				IsEnabled = true,
 				Content = key.Text,
 				Foreground = key.TextColor,
-				Background = key.BeforeClickButtonColor,
+				Background = key.KeyboardUpButtonColor,
 				Focusable = false,
 				IsHitTestVisible = false,
-				FontSize = key.TextSize
+				FontSize = key.FontSize
 			};
 			Canvas canvas = new()
 			{
@@ -158,7 +158,7 @@ public partial class MainWindow : Window
 	}
 	private void CanvasUpdater_OnTicked(object? sender, EventArgs e)
 	{
-		float shifts = this.App.Config.PixelPerSecond / this.App.Config.TrailUpdateFps;
+		float shifts = this.App.Config.TrailPixelPerSecond / this.App.Config.TrailUpdateFps;
 
 		this.Dispatcher.Invoke(() =>
 		{
@@ -205,7 +205,7 @@ public partial class MainWindow : Window
 
 				key.Canvas.Children.Add(key.LastRectangle);
 				Canvas.SetBottom(key.LastRectangle, 0);
-				Canvas.SetLeft(key.LastRectangle, key.Margin.Left);
+				Canvas.SetLeft(key.LastRectangle, key.ButtonMargin.Left);
 			}
 		});
 	}
@@ -220,7 +220,7 @@ public partial class MainWindow : Window
 
 			if (key.Button is null) continue;
 
-			key.Button.Background = key.BeforeClickButtonColor;
+			key.Button.Background = key.KeyboardUpButtonColor;
 
 		Final:
 			key.HasBeenHolding = false;
@@ -235,7 +235,7 @@ public partial class MainWindow : Window
 
 			if (key.Button is null) goto Final;
 
-			key.Button.Background = key.AfterClickButtonColor;
+			key.Button.Background = key.KeyboardDownButtonColor;
 
 			if (key.Canvas is null) goto Final;
 
@@ -291,6 +291,7 @@ public partial class MainWindow : Window
 
 		foreach (KeyInfo key in this.App.Config.Keys)
 		{
+			key.ClickCount = 0;
 			key.KpsHandler.Clear();
 			key.KpsHandler.PeakKps = 0;
 		}
