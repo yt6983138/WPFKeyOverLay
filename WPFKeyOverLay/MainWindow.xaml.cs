@@ -164,54 +164,59 @@ public partial class MainWindow : Window
 	{
 		float shifts = this.App.Config.TrailPixelPerSecond / this.App.Config.TrailUpdateFps;
 
-		this.Dispatcher.Invoke(() =>
+		this.Dispatcher.Invoke(Dispatch);
+
+		void Dispatch()
 		{
 			foreach (KeyInfo key in this.App.Config.Keys)
 			{
-				if (key.Canvas is null) continue;
-
-				foreach (UIElement obj in key.Canvas.Children)
+				lock (key)
 				{
-					if (obj is not Rectangle rect) continue;
+					if (key.Canvas is null) continue;
 
-					if (rect == key.LastRectangle) continue;
-
-					double bottom = Canvas.GetBottom(rect);
-
-					if (bottom > key.Canvas.Height)
+					foreach (UIElement obj in key.Canvas.Children)
 					{
-						key.Canvas.Children.Remove(rect);
+						if (obj is not Rectangle rect) continue;
+
+						if (rect == key.LastRectangle) continue;
+
+						double bottom = Canvas.GetBottom(rect);
+
+						if (bottom > key.Canvas.Height)
+						{
+							key.Canvas.Children.Remove(rect);
+						}
+
+						Canvas.SetBottom(rect, bottom + shifts);
 					}
 
-					Canvas.SetBottom(rect, bottom + shifts);
+					if (key.LastRectangle is not null)
+					{
+						double bottom = Canvas.GetBottom(key.LastRectangle);
+
+						if (bottom > key.Canvas.Height) key.Canvas.Children.Remove(key.LastRectangle);
+
+						key.LastRectangle.Height += shifts;
+						continue;
+					}
+
+					if (!key.HasBeenHolding) continue;
+
+					key.LastRectangle = new()
+					{
+						Height = shifts,
+						Width = key.Width - key.TrailMargin.Right - key.TrailMargin.Left,
+						Fill = key.TrailColor,
+						VerticalAlignment = VerticalAlignment.Bottom,
+						HorizontalAlignment = HorizontalAlignment.Left
+					};
+
+					key.Canvas.Children.Add(key.LastRectangle);
+					Canvas.SetBottom(key.LastRectangle, 0);
+					Canvas.SetLeft(key.LastRectangle, key.ButtonMargin.Left);
 				}
-
-				if (key.LastRectangle is not null)
-				{
-					double bottom = Canvas.GetBottom(key.LastRectangle);
-
-					if (bottom > key.Canvas.Height) key.Canvas.Children.Remove(key.LastRectangle);
-
-					key.LastRectangle.Height += shifts;
-					continue;
-				}
-
-				if (!key.HasBeenHolding) continue;
-
-				key.LastRectangle = new()
-				{
-					Height = shifts,
-					Width = key.Width - key.TrailMargin.Right - key.TrailMargin.Left,
-					Fill = key.TrailColor,
-					VerticalAlignment = VerticalAlignment.Bottom,
-					HorizontalAlignment = HorizontalAlignment.Left
-				};
-
-				key.Canvas.Children.Add(key.LastRectangle);
-				Canvas.SetBottom(key.LastRectangle, 0);
-				Canvas.SetLeft(key.LastRectangle, key.ButtonMargin.Left);
 			}
-		});
+		}
 	}
 	#endregion
 
@@ -220,41 +225,46 @@ public partial class MainWindow : Window
 	{
 		foreach (KeyInfo key in this.App.Config.Keys)
 		{
-			if (key.Key != e.Key) goto Final;
+			lock (key)
+			{
+				if (key.Key != e.Key) continue;
 
-			if (key.Button is null) continue;
+				if (key.Button is null) continue;
 
-			key.Button.Background = key.KeyboardUpButtonColor;
+				key.Button.Background = key.KeyboardUpButtonColor;
 
-		Final:
-			key.HasBeenHolding = false;
-			key.LastRectangle = null;
+				key.HasBeenHolding = false;
+				key.LastRectangle = null;
+			}
 		}
 	}
 	private void Keyboard_Down(object sender, GlobalKeyEventArgs e)
 	{
 		foreach (KeyInfo key in this.App.Config.Keys)
 		{
-			if (key.Key != e.Key) continue;
-
-			if (key.Button is null) goto Final;
-
-			key.Button.Background = key.KeyboardDownButtonColor;
-
-			if (key.Canvas is null) goto Final;
-
-			Final:
-			if (!key.HasBeenHolding)
+			lock (key)
 			{
-				this.TotalKpsHandler.Update(1);
-				key.KpsHandler.Update(1);
-				key.ClickCount++;
+				if (key.Key != e.Key) continue;
+
+				if (key.Button is null) goto Final;
+
+				key.Button.Background = key.KeyboardDownButtonColor;
+
+				if (key.Canvas is null) goto Final;
+
+				Final:
+				if (!key.HasBeenHolding)
+				{
+					this.TotalKpsHandler.Update(1);
+					key.KpsHandler.Update(1);
+					key.ClickCount++;
+				}
+
+				key.HasBeenHolding = true;
+
+				this.Resources[$"Key.{key.Key}.ClickCount"] = key.ClickCount;
+				continue;
 			}
-
-			key.HasBeenHolding = true;
-
-			this.Resources[$"Key.{key.Key}.ClickCount"] = key.ClickCount;
-			continue;
 		}
 		this.Resources["Key.All.ClickCount"] = this.App.Config.Keys.Sum(x => x.ClickCount);
 

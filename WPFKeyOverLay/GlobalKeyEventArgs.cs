@@ -1,7 +1,7 @@
 ﻿using System.Windows.Input;
 
 namespace WPFKeyOverLay;
-public class GlobalKeyEventArgs : EventArgs
+public struct GlobalKeyEventArgs
 {
 	public bool Handled { get; set; }
 	public Key Key { get; set; }
