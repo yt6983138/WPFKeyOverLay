@@ -33,6 +33,8 @@ public partial class MainWindow : Window
 	public TickedExecuter KpsUpdater { get; private set; } = new();
 
 	public bool IsClickThroughMode { get; private set; } = false;
+
+	public KpsHandler TotalKpsHandler { get; private set; }
 	#endregion
 
 	#region Constructor
@@ -70,6 +72,8 @@ public partial class MainWindow : Window
 
 		this.Width = this.App.Config.Keys.Sum(x => x.Width);
 		this.Height = this.App.Config.DefaultHeight;
+
+		this.TotalKpsHandler = new(this.App.Config.KpsUpdatesPerSecond);
 
 		int i = 0;
 		foreach (KeyInfo key in this.App.Config.Keys)
@@ -152,8 +156,8 @@ public partial class MainWindow : Window
 				this.Resources[$"Key.{key.Key}.PeakKps"] = key.KpsHandler.PeakKps;
 			}
 
-			this.Resources[$"Key.All.Kps"] = this.App.Config.Keys.Sum(x => x.KpsHandler.Kps);
-			this.Resources[$"Key.All.PeakKps"] = this.App.Config.Keys.Sum(x => x.KpsHandler.PeakKps);
+			this.Resources[$"Key.All.Kps"] = this.TotalKpsHandler.Kps;
+			this.Resources[$"Key.All.PeakKps"] = this.TotalKpsHandler.PeakKps;
 		});
 	}
 	private void CanvasUpdater_OnTicked(object? sender, EventArgs e)
@@ -242,6 +246,7 @@ public partial class MainWindow : Window
 			Final:
 			if (!key.HasBeenHolding)
 			{
+				this.TotalKpsHandler.Update(1);
 				key.KpsHandler.Update(1);
 				key.ClickCount++;
 			}
